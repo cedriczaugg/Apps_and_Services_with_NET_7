@@ -1,4 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
+﻿// <copyright file="Program.cs" company="Packt">
+// Copyright (c) Packt. All rights reserved.
+// </copyright>
+
+using System.Data;
+using Microsoft.Data.SqlClient;
 
 // SqlConnection and so on
 SqlConnectionStringBuilder builder = new();
@@ -20,8 +25,7 @@ WriteLine();
 switch (key)
 {
     case ConsoleKey.D1 or ConsoleKey.NumPad1:
-        builder.DataSource = "."; // Local SQL Server
-        // @".\net7book"; // Local SQL Server with an instance name
+        builder.DataSource = "."; // Local SQL Server // @".\net7book"; // Local SQL Server with an instance name
         break;
     case ConsoleKey.D2 or ConsoleKey.NumPad2:
         builder.DataSource = // Azure SQL Database
@@ -50,8 +54,7 @@ switch (key)
         break;
     case ConsoleKey.D2 or ConsoleKey.NumPad2:
     {
-        builder.UserID = "sa"; // Azure SQL Edge
-        // "markjprice"; // change to your username
+        builder.UserID = "sa"; // Azure SQL Edge // "markjprice"; // change to your username
         Write("Enter your SQL Server password: ");
         var password = ReadLine();
         if (string.IsNullOrWhiteSpace(password))
@@ -64,6 +67,7 @@ switch (key)
         builder.PersistSecurityInfo = false;
         break;
     }
+
     default:
         WriteLine("No authentication selected.");
         return;
@@ -76,8 +80,7 @@ connection.StateChange += Connection_StateChange;
 connection.InfoMessage += Connection_InfoMessage;
 try
 {
-    WriteLine("Opening connection. Please wait up to {0} seconds...",
-        builder.ConnectTimeout);
+    WriteLine("Opening connection. Please wait up to {0} seconds...", builder.ConnectTimeout);
     WriteLine();
     connection.Open();
     WriteLine($"SQL Server version: {connection.ServerVersion}");
@@ -89,4 +92,21 @@ catch (SqlException ex)
     return;
 }
 
+SqlCommand cmd = connection.CreateCommand();
+cmd.CommandType = CommandType.Text;
+cmd.CommandText = "SELECT ProductId, ProductName, UnitPrice FROM Products";
+SqlDataReader r = cmd.ExecuteReader();
+WriteLine("----------------------------------------------------------");
+WriteLine("| {0,5} | {1,-35} | {2,8} |", "Id", "Name", "Price");
+WriteLine("----------------------------------------------------------");
+while (r.Read())
+{
+    WriteLine("| {0,5} | {1,-35} | {2,8:C} |",
+        r.GetInt32("ProductId"),
+        r.GetString("ProductName"),
+        r.GetDecimal("UnitPrice"));
+}
+
+WriteLine("----------------------------------------------------------");
+r.Close();
 connection.Close();

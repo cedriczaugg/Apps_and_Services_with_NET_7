@@ -1,6 +1,13 @@
-﻿using System.Data;
+﻿// <copyright file="Program.EventHandlers.cs" company="Packt">
+// Copyright (c) Packt. All rights reserved.
+// </copyright>
+
+using System.Data;
 using Microsoft.Data.SqlClient;
 
+/// <summary>
+/// Event handlers for the main program.
+/// </summary>
 internal partial class Program
 {
     private static void Connection_StateChange(object sender, StateChangeEventArgs e)
@@ -16,7 +23,11 @@ internal partial class Program
         var previousColor = ForegroundColor;
         ForegroundColor = ConsoleColor.DarkBlue;
         WriteLine($"Info: {e.Message}.");
-        foreach (SqlError error in e.Errors) WriteLine($"  Error: {error.Message}");
+        foreach (SqlError error in e.Errors)
+        {
+            WriteLine($"  Error: {error.Message}");
+        }
+
         ForegroundColor = previousColor;
     }
 }
