@@ -82,7 +82,7 @@ try
 {
     WriteLine("Opening connection. Please wait up to {0} seconds...", builder.ConnectTimeout);
     WriteLine();
-    connection.Open();
+    await connection.OpenAsync();
     WriteLine($"SQL Server version: {connection.ServerVersion}");
     connection.StatisticsEnabled = true;
 }
@@ -92,14 +92,24 @@ catch (SqlException ex)
     return;
 }
 
-SqlCommand cmd = connection.CreateCommand();
+Write("Enter a price: ");
+string? priceText = ReadLine();
+if (!decimal.TryParse(priceText, out decimal price))
+{
+    WriteLine("You must enter a valid unit price.");
+    return;
+}
+
+var cmd = connection.CreateCommand();
 cmd.CommandType = CommandType.Text;
-cmd.CommandText = "SELECT ProductId, ProductName, UnitPrice FROM Products";
-SqlDataReader r = cmd.ExecuteReader();
+cmd.CommandText = "SELECT ProductId, ProductName, UnitPrice FROM Products"
+    + " WHERE UnitPrice > @price";
+cmd.Parameters.AddWithValue("price", price);
+var r = await cmd.ExecuteReaderAsync();
 WriteLine("----------------------------------------------------------");
 WriteLine("| {0,5} | {1,-35} | {2,8} |", "Id", "Name", "Price");
 WriteLine("----------------------------------------------------------");
-while (r.Read())
+while (await r.ReadAsync())
 {
     WriteLine("| {0,5} | {1,-35} | {2,8:C} |",
         r.GetInt32("ProductId"),
@@ -108,5 +118,5 @@ while (r.Read())
 }
 
 WriteLine("----------------------------------------------------------");
-r.Close();
-connection.Close();
+await r.CloseAsync();
+await r.CloseAsync();
