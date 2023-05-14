@@ -76,19 +76,23 @@ using (NorthwindDb db = new(options.Options))
     return;
   }
   // We have to use var because we are projecting into an anonymous type.
-  var products = db.Products
-    .Where(p => p.UnitPrice > price)
-    .Select(p => new { p.ProductId, p.ProductName, p.UnitPrice });
-  WriteLine("----------------------------------------------------------");
-  WriteLine("| {0,5} | {1,-35} | {2,8} |", "Id", "Name", "Price");
-  WriteLine("----------------------------------------------------------");
-  foreach (var p in products)
+  if (db.Products != null)
   {
-    WriteLine("| {0,5} | {1,-35} | {2,8:C} |",
-      p.ProductId, p.ProductName, p.UnitPrice);
+    var products = db.Products
+      .Where(p => p.UnitPrice > price)
+      .Select(p => new { p.ProductId, p.ProductName, p.UnitPrice });
+    WriteLine("----------------------------------------------------------");
+    WriteLine("| {0,5} | {1,-35} | {2,8} |", "Id", "Name", "Price");
+    WriteLine("----------------------------------------------------------");
+    foreach (var p in products)
+    {
+      WriteLine("| {0,5} | {1,-35} | {2,8:C} |",
+        p.ProductId, p.ProductName, p.UnitPrice);
+    }
+    WriteLine("----------------------------------------------------------");
+    WriteLine(products.ToQueryString());
   }
-  WriteLine("----------------------------------------------------------");
-  WriteLine(products.ToQueryString());
+
   WriteLine();
   WriteLine($"Provider:   {db.Database.ProviderName}");
   WriteLine($"Connection: {db.Database.GetConnectionString()}");
