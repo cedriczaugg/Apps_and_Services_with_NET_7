@@ -25,7 +25,7 @@ WriteLine();
 switch (key)
 {
     case ConsoleKey.D1 or ConsoleKey.NumPad1:
-        builder.DataSource = "."; // Local SQL Server // @".\net7book"; // Local SQL Server with an instance name
+        builder.DataSource = "(localdb)\\MSSQLLocalDB"; // Local SQL Server // @".\net7book"; // Local SQL Server with an instance name
         break;
     case ConsoleKey.D2 or ConsoleKey.NumPad2:
         builder.DataSource = // Azure SQL Database
@@ -111,12 +111,12 @@ WriteLine("| {0,5} | {1,-35} | {2,8} |", "Id", "Name", "Price");
 WriteLine("----------------------------------------------------------");
 while (await r.ReadAsync())
 {
-    WriteLine("| {0,5} | {1,-35} | {2,8:C} |",
+    WriteLine(
+        "| {0,5} | {1,-35} | {2,8:C} |",
         r.GetInt32("ProductId"),
         r.GetString("ProductName"),
         r.GetDecimal("UnitPrice"));
 }
 
 WriteLine("----------------------------------------------------------");
-await r.CloseAsync();
 await r.CloseAsync();
