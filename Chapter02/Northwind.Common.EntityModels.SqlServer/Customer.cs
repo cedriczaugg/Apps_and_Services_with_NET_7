@@ -14,6 +14,7 @@ public partial class Customer
 {
     [Key]
     [StringLength(5)]
+    [RegularExpression("[A-Z]{5}")]
     public string CustomerId { get; set; } = null!;
 
     [StringLength(40)]
