@@ -113,10 +113,11 @@ while (await r.ReadAsync())
 {
     WriteLine(
         "| {0,5} | {1,-35} | {2,8:C} |",
-        r.GetInt32("ProductId"),
-        r.GetString("ProductName"),
-        r.GetDecimal("UnitPrice"));
+        await r.GetFieldValueAsync<int>("ProductId"),
+        await r.GetFieldValueAsync<string>("ProductName"),
+        await r.GetFieldValueAsync<decimal>("UnitPrice"));
 }
 
 WriteLine("----------------------------------------------------------");
 await r.CloseAsync();
+await connection.CloseAsync();

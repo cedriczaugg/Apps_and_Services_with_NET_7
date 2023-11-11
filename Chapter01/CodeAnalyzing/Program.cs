@@ -19,6 +19,7 @@ public class Program
     /// </param>
     public static void Main(string[] args)
     {
+        Console.WriteLine("Hello world!");
         Debug.WriteLine("Hello, Debugger!");
     }
 }
