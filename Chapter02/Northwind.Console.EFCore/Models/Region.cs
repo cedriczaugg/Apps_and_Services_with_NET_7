@@ -17,5 +17,5 @@ public partial class Region
     public string RegionDescription { get; set; } = null!;
 
     [InverseProperty("Region")]
-    public virtual ICollection<Territory> Territories { get; } = new List<Territory>();
+    public virtual ICollection<Territory> Territories { get; set; } = new List<Territory>();
 }

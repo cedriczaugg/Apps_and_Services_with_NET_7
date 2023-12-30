@@ -9,6 +9,7 @@ namespace Northwind.Console.EFCore.Models;
 [Keyless]
 public partial class QuarterlyOrder
 {
+    [Column("CustomerID")]
     [StringLength(5)]
     public string? CustomerId { get; set; }
 

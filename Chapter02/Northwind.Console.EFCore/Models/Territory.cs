@@ -25,5 +25,5 @@ public partial class Territory
 
     [ForeignKey("TerritoryId")]
     [InverseProperty("Territories")]
-    public virtual ICollection<Employee> Employees { get; } = new List<Employee>();
+    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 }

@@ -2,7 +2,7 @@
 using Northwind.Console.HierarchyMapping; // HierarchyDb, Student, Employee
 DbContextOptionsBuilder<HierarchyDb> options = new();
 // Modify the connection string manually to use Azure SQL Database or Edge.
-options.UseSqlServer("Data Source=.;Initial Catalog=HierarchyMapping;Integrated Security=true;TrustServerCertificate=true;");
+options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=HierarchyMapping;Integrated Security=true;TrustServerCertificate=true;");
 using (HierarchyDb db = new(options.Options))
 {
     bool deleted = await db.Database.EnsureDeletedAsync();

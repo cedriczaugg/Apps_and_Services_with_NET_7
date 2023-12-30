@@ -12,6 +12,7 @@ public partial class SummaryOfSalesByYear
     [Column(TypeName = "datetime")]
     public DateTime? ShippedDate { get; set; }
 
+    [Column("OrderID")]
     public int OrderId { get; set; }
 
     [Column(TypeName = "money")]

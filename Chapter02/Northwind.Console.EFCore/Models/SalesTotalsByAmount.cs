@@ -12,6 +12,7 @@ public partial class SalesTotalsByAmount
     [Column(TypeName = "money")]
     public decimal? SaleAmount { get; set; }
 
+    [Column("OrderID")]
     public int OrderId { get; set; }
 
     [StringLength(40)]

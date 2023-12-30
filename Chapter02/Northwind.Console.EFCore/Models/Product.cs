@@ -42,7 +42,7 @@ public partial class Product
     public virtual Category? Category { get; set; }
 
     [InverseProperty("Product")]
-    public virtual ICollection<OrderDetail> OrderDetails { get; } = new List<OrderDetail>();
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     [ForeignKey("SupplierId")]
     [InverseProperty("Products")]

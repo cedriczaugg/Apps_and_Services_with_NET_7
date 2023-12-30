@@ -15,62 +15,62 @@ public partial class NorthwindDb : DbContext
     {
     }
 
-    public virtual DbSet<AlphabeticalListOfProduct>? AlphabeticalListOfProducts { get; set; }
+    public virtual DbSet<AlphabeticalListOfProduct> AlphabeticalListOfProducts { get; set; }
 
-    public virtual DbSet<Category>? Categories { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<CategorySalesFor1997>? CategorySalesFor1997s { get; set; }
+    public virtual DbSet<CategorySalesFor1997> CategorySalesFor1997s { get; set; }
 
-    public virtual DbSet<CurrentProductList>? CurrentProductLists { get; set; }
+    public virtual DbSet<CurrentProductList> CurrentProductLists { get; set; }
 
-    public virtual DbSet<Customer>? Customers { get; set; }
+    public virtual DbSet<Customer> Customers { get; set; }
 
-    public virtual DbSet<CustomerAndSuppliersByCity>? CustomerAndSuppliersByCities { get; set; }
+    public virtual DbSet<CustomerAndSuppliersByCity> CustomerAndSuppliersByCities { get; set; }
 
-    public virtual DbSet<CustomerDemographic>? CustomerDemographics { get; set; }
+    public virtual DbSet<CustomerDemographic> CustomerDemographics { get; set; }
 
-    public virtual DbSet<Employee>? Employees { get; set; }
+    public virtual DbSet<Employee> Employees { get; set; }
 
-    public virtual DbSet<Invoice>? Invoices { get; set; }
+    public virtual DbSet<Invoice> Invoices { get; set; }
 
-    public virtual DbSet<Order>? Orders { get; set; }
+    public virtual DbSet<Order> Orders { get; set; }
 
-    public virtual DbSet<OrderDetail>? OrderDetails { get; set; }
+    public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
-    public virtual DbSet<OrderDetailsExtended>? OrderDetailsExtendeds { get; set; }
+    public virtual DbSet<OrderDetailsExtended> OrderDetailsExtendeds { get; set; }
 
-    public virtual DbSet<OrderSubtotal>? OrderSubtotals { get; set; }
+    public virtual DbSet<OrderSubtotal> OrderSubtotals { get; set; }
 
-    public virtual DbSet<OrdersQry>? OrdersQries { get; set; }
+    public virtual DbSet<OrdersQry> OrdersQries { get; set; }
 
-    public virtual DbSet<Product>? Products { get; set; }
+    public virtual DbSet<Product> Products { get; set; }
 
-    public virtual DbSet<ProductSalesFor1997>? ProductSalesFor1997s { get; set; }
+    public virtual DbSet<ProductSalesFor1997> ProductSalesFor1997s { get; set; }
 
-    public virtual DbSet<ProductsAboveAveragePrice>? ProductsAboveAveragePrices { get; set; }
+    public virtual DbSet<ProductsAboveAveragePrice> ProductsAboveAveragePrices { get; set; }
 
-    public virtual DbSet<ProductsByCategory>? ProductsByCategories { get; set; }
+    public virtual DbSet<ProductsByCategory> ProductsByCategories { get; set; }
 
-    public virtual DbSet<QuarterlyOrder>? QuarterlyOrders { get; set; }
+    public virtual DbSet<QuarterlyOrder> QuarterlyOrders { get; set; }
 
-    public virtual DbSet<Region>? Regions { get; set; }
+    public virtual DbSet<Region> Regions { get; set; }
 
-    public virtual DbSet<SalesByCategory>? SalesByCategories { get; set; }
+    public virtual DbSet<SalesByCategory> SalesByCategories { get; set; }
 
-    public virtual DbSet<SalesTotalsByAmount>? SalesTotalsByAmounts { get; set; }
+    public virtual DbSet<SalesTotalsByAmount> SalesTotalsByAmounts { get; set; }
 
-    public virtual DbSet<Shipper>? Shippers { get; set; }
+    public virtual DbSet<Shipper> Shippers { get; set; }
 
-    public virtual DbSet<SummaryOfSalesByQuarter>? SummaryOfSalesByQuarters { get; set; }
+    public virtual DbSet<SummaryOfSalesByQuarter> SummaryOfSalesByQuarters { get; set; }
 
-    public virtual DbSet<SummaryOfSalesByYear>? SummaryOfSalesByYears { get; set; }
+    public virtual DbSet<SummaryOfSalesByYear> SummaryOfSalesByYears { get; set; }
 
-    public virtual DbSet<Supplier>? Suppliers { get; set; }
+    public virtual DbSet<Supplier> Suppliers { get; set; }
 
-    public virtual DbSet<Territory>? Territories { get; set; }
+    public virtual DbSet<Territory> Territories { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Northwind;Integrated Security=true;TrustServerCertificate=true;");
+        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Northwind;Integrated Security=true;TrustServerCertificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -110,6 +110,14 @@ public partial class NorthwindDb : DbContext
                     {
                         j.HasKey("CustomerId", "CustomerTypeId").IsClustered(false);
                         j.ToTable("CustomerCustomerDemo");
+                        j.IndexerProperty<string>("CustomerId")
+                            .HasMaxLength(5)
+                            .IsFixedLength()
+                            .HasColumnName("CustomerID");
+                        j.IndexerProperty<string>("CustomerTypeId")
+                            .HasMaxLength(10)
+                            .IsFixedLength()
+                            .HasColumnName("CustomerTypeID");
                     });
         });
 
@@ -143,6 +151,11 @@ public partial class NorthwindDb : DbContext
                     j =>
                     {
                         j.HasKey("EmployeeId", "TerritoryId").IsClustered(false);
+                        j.ToTable("EmployeeTerritories");
+                        j.IndexerProperty<int>("EmployeeId").HasColumnName("EmployeeID");
+                        j.IndexerProperty<string>("TerritoryId")
+                            .HasMaxLength(20)
+                            .HasColumnName("TerritoryID");
                     });
         });
 
@@ -156,7 +169,7 @@ public partial class NorthwindDb : DbContext
         modelBuilder.Entity<Order>(entity =>
         {
             entity.Property(e => e.CustomerId).IsFixedLength();
-            entity.Property(e => e.Freight).HasDefaultValueSql("((0))");
+            entity.Property(e => e.Freight).HasDefaultValue(0m);
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders).HasConstraintName("FK_Orders_Customers");
 
@@ -169,7 +182,7 @@ public partial class NorthwindDb : DbContext
         {
             entity.HasKey(e => new { e.OrderId, e.ProductId }).HasName("PK_Order_Details");
 
-            entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
+            entity.Property(e => e.Quantity).HasDefaultValue((short)1);
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -199,10 +212,10 @@ public partial class NorthwindDb : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.Property(e => e.ReorderLevel).HasDefaultValueSql("((0))");
-            entity.Property(e => e.UnitPrice).HasDefaultValueSql("((0))");
-            entity.Property(e => e.UnitsInStock).HasDefaultValueSql("((0))");
-            entity.Property(e => e.UnitsOnOrder).HasDefaultValueSql("((0))");
+            entity.Property(e => e.ReorderLevel).HasDefaultValue((short)0);
+            entity.Property(e => e.UnitPrice).HasDefaultValue(0m);
+            entity.Property(e => e.UnitsInStock).HasDefaultValue((short)0);
+            entity.Property(e => e.UnitsOnOrder).HasDefaultValue((short)0);
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products).HasConstraintName("FK_Products_Categories");
 

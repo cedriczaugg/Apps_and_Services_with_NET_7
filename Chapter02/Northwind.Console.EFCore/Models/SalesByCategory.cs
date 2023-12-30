@@ -9,6 +9,7 @@ namespace Northwind.Console.EFCore.Models;
 [Keyless]
 public partial class SalesByCategory
 {
+    [Column("CategoryID")]
     public int CategoryId { get; set; }
 
     [StringLength(15)]

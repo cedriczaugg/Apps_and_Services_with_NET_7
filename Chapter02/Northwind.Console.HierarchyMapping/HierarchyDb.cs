@@ -12,9 +12,9 @@ public class HierarchyDb : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Person>()
-            .UseTpcMappingStrategy();
+            //.UseTpcMappingStrategy();
             // .UseTptMappingStrategy();
-            // .UseTphMappingStrategy();
+            .UseTphMappingStrategy();
         // Populate database with sample data.
         Student p1 = new() { Id = 1, Name = "Roman Roy", Subject = "History" };
         Employee p2 = new() { Id = 2, Name = "Kendall Roy", 

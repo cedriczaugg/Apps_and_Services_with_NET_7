@@ -47,9 +47,9 @@ public partial class Customer
     public string? Fax { get; set; }
 
     [InverseProperty("Customer")]
-    public virtual ICollection<Order> Orders { get; } = new List<Order>();
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     [ForeignKey("CustomerId")]
     [InverseProperty("Customers")]
-    public virtual ICollection<CustomerDemographic> CustomerTypes { get; } = new List<CustomerDemographic>();
+    public virtual ICollection<CustomerDemographic> CustomerTypes { get; set; } = new List<CustomerDemographic>();
 }

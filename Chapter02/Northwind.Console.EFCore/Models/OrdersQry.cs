@@ -9,11 +9,14 @@ namespace Northwind.Console.EFCore.Models;
 [Keyless]
 public partial class OrdersQry
 {
+    [Column("OrderID")]
     public int OrderId { get; set; }
 
+    [Column("CustomerID")]
     [StringLength(5)]
     public string? CustomerId { get; set; }
 
+    [Column("EmployeeID")]
     public int? EmployeeId { get; set; }
 
     [Column(TypeName = "datetime")]

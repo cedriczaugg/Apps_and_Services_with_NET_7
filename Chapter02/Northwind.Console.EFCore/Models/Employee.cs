@@ -64,10 +64,10 @@ public partial class Employee
     public string? PhotoPath { get; set; }
 
     [InverseProperty("ReportsToNavigation")]
-    public virtual ICollection<Employee> InverseReportsToNavigation { get; } = new List<Employee>();
+    public virtual ICollection<Employee> InverseReportsToNavigation { get; set; } = new List<Employee>();
 
     [InverseProperty("Employee")]
-    public virtual ICollection<Order> Orders { get; } = new List<Order>();
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     [ForeignKey("ReportsTo")]
     [InverseProperty("InverseReportsToNavigation")]
@@ -75,5 +75,5 @@ public partial class Employee
 
     [ForeignKey("EmployeeId")]
     [InverseProperty("Employees")]
-    public virtual ICollection<Territory> Territories { get; } = new List<Territory>();
+    public virtual ICollection<Territory> Territories { get; set; } = new List<Territory>();
 }

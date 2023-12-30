@@ -9,6 +9,7 @@ namespace Northwind.Console.EFCore.Models;
 [Keyless]
 public partial class OrderSubtotal
 {
+    [Column("OrderID")]
     public int OrderId { get; set; }
 
     [Column(TypeName = "money")]

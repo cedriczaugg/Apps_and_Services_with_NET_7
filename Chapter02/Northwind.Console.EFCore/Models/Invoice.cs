@@ -27,6 +27,7 @@ public partial class Invoice
     [StringLength(15)]
     public string? ShipCountry { get; set; }
 
+    [Column("CustomerID")]
     [StringLength(5)]
     public string? CustomerId { get; set; }
 
@@ -51,6 +52,7 @@ public partial class Invoice
     [StringLength(31)]
     public string Salesperson { get; set; } = null!;
 
+    [Column("OrderID")]
     public int OrderId { get; set; }
 
     [Column(TypeName = "datetime")]
@@ -65,6 +67,7 @@ public partial class Invoice
     [StringLength(40)]
     public string ShipperName { get; set; } = null!;
 
+    [Column("ProductID")]
     public int ProductId { get; set; }
 
     [StringLength(40)]

@@ -9,6 +9,7 @@ namespace Northwind.Console.EFCore.Models;
 [Keyless]
 public partial class CurrentProductList
 {
+    [Column("ProductID")]
     public int ProductId { get; set; }
 
     [StringLength(40)]

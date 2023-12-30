@@ -9,8 +9,10 @@ namespace Northwind.Console.EFCore.Models;
 [Keyless]
 public partial class OrderDetailsExtended
 {
+    [Column("OrderID")]
     public int OrderId { get; set; }
 
+    [Column("ProductID")]
     public int ProductId { get; set; }
 
     [StringLength(40)]

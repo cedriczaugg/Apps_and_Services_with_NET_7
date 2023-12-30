@@ -65,7 +65,7 @@ public partial class Order
     public virtual Employee? Employee { get; set; }
 
     [InverseProperty("Order")]
-    public virtual ICollection<OrderDetail> OrderDetails { get; } = new List<OrderDetail>();
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     [ForeignKey("ShipVia")]
     [InverseProperty("Orders")]
